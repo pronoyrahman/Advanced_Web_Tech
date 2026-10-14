@@ -1,35 +1,63 @@
-import { Injectable } from '@nestjs/common';
-
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { CreateCourseDto } from './dto/create-course.dto.js';
+import { UpdateCourseDto } from './dto/update-course.dto.js';
+import { Express } from 'express';
+import { Multer } from 'multer';
 @Injectable()
 export class CourseService {
 
-getAllCourses() : string{
-    return "Get all courses - from servcie";
+getAllCourses(){
+    return{
+        message: "all courses fetched succesfully ",
+        data: [],
+    };
 }
 
-getCourseById(id: string) :string
+getCourseById(id: string)
 {
-    return `Get course with id : ${id} from service`
+   return{
+    message:'Course fetched successfully',
+    id,
+   }
 }
 
-createCourse() : string
+createCourse(dto: CreateCourseDto) 
 {
-    return " Create course - from service";
+    return {
+        message: 'courrse created succesfully ',
+        data:dto,
+    };
 }
 
-updateCourse(id: string):string
-{
-    return ` update course ${id} -from service`
+updateCourse(id: string, dto: UpdateCourseDto) {
+    return { message: 'Course updated successfully',
+      id, data: dto,
+    };
+  }
+
+patchCourse(id: string ,dto: UpdateCourseDto){
+    return {
+        message: " course updated succesfully",id,
+        updateFields:Object.keys(dto)
+    }
 } 
 
-patchCourse(id: string) :string{
-    return `patch Course ${id} -from service`
+deleteCourse(id: string) {
+    return { message: "Course deleted successfully",  id };
 } 
 
-deleteCourse(id: string) :string
-{
-    return `Delete Course ${id} -from service`
-} 
 
+uploadCourseMaterial(id: string, file:Express.Multer.File){
+    if (!file) {
+      throw new BadRequestException('File is required');
+    }
+    return {
+      message: 'Material uploaded successfully',
+      courseId: id,
+      filename: file.filename,
+      path: `uploads/${file.filename}`,
+    };
+    
+}
 
 }
