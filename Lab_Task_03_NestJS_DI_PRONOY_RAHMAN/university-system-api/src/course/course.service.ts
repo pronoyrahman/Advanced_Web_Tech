@@ -11,7 +11,7 @@ export class CourseService {
     }
 
     createCourse(name: string, code: string) {
-    return { message: 'Course created', data: { name, code } };
+    return { message: 'Course createdddddd', data: { name, code } };
     }   
 
 
